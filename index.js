@@ -6,6 +6,8 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+const PORT = process.env.PORT || 8080
+
 const customerData = mongoose.Schema({
     CustomerId: { type: Number},//, required: true },
     CustomerName: { type: String},//, required: true },
@@ -141,11 +143,10 @@ app.delete("/delete/:id",async(req,res) => {
 })
 
 mongoose.connect(process.env.MONGO_URI)
-.then(() =>{
-    console.log("Conntected to DataBase")
-    app.listen(PORT, () => console.log("Server is up and running..."))
+.then(() => {
+    console.log("Connected to DataBase");
+    app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 })
-
-.catch((err) => console.log(err))
+.catch((err) => console.log(err));
 
  
