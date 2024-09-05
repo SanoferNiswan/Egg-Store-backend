@@ -32,18 +32,6 @@ const transactionData = mongoose.Schema({
     timestamps : true
 })
 
-// const settlementData = mongoose.Schema({
-//     CustomerId : Number, 
-//     CustomerName : String,
-//     ShopName : String,
-//     ShopAddress : String,
-//     Mobile : String,
-//     AmountToBePaid : Number,
-//     TrayToBeCollected : Number
-// },{
-//     timestamps : true
-// })
-
 const settlementData = mongoose.Schema({
   CustomerId: Number,
   AmountToBePaid: { type: Number, default: 0 }, // Default initial value
@@ -56,8 +44,6 @@ const customerModel = mongoose.model("customer",customerData)
 const transactionModel = mongoose.model("transaction",transactionData)
 const settlementModel = mongoose.model("settlement",settlementData)
 
-//get data
-//​http://localhost:8080/
 app.get("/getcustomers",async(req,res) => {
     const data = await customerModel.find({})
     res.json({success : true, data : data})
@@ -80,36 +66,6 @@ app.get("/getsettlementdetails/:id", async (req, res) => {
   res.json({ success: true, data: data });
 });
 
-// app.get("/gettrandetails/:id", async (req, res) => {
-//   try {
-//     const {id}  = req.params;
-//     _id = parseInt(id)
-//     console.log(req.body, id);
-
-//     // Find transaction by MongoDB _id
-//     const data = await transactionModel.findById(id);
-//     console.log("data", data);
-
-//     if (!data) {
-//       return res.status(404).json({ success: false, message: "Transaction not found" });
-//     }
-
-//     res.json({ success: true, data: data });
-//   } catch (error) {
-//     console.error("Error fetching transaction details:", error);
-//     res.status(500).json({ success: false, message: "Internal server error" });
-//   }
-// });
-
-
-//save data
-// app.post("/savecustomer",async(req,res) => {
-//     console.log(req.body)
-//     const data = customerModel(req.body)
-//     await data.save()
-//     res.send({success : true, message : "Data Saved Successfully", data : data})
-// })
-
 app.post("/savecustomer", async (req, res) => {
     console.log(req.body)
     const { ShopName, CustomerName, ShopAddress, Mobile, CustomerId } = req.body;
@@ -117,11 +73,6 @@ app.post("/savecustomer", async (req, res) => {
     if (!ShopName || !CustomerName || !ShopAddress || !Mobile) {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
-  
-    // Optional: Additional validation for types or formats
-    // if (typeof CustomerId !== 'number' || typeof ShopName !== 'string' || typeof CustomerName !== 'string') {
-    //   return res.status(400).json({ success: false, message: "Invalid data types" });
-    // }
   
     try {
       const data = new customerModel(req.body);
