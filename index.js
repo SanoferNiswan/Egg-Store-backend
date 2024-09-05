@@ -6,16 +6,6 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-const PORT = process.env.PORT || 8080
-
-//Schema
-// const customerData = mongoose.Schema({
-//     CustomerId : Number, 
-//     CustomerName : String,
-//     ShopName : String,
-//     ShopAddress : String,
-//     Mobile : String
-// })
 const customerData = mongoose.Schema({
     CustomerId: { type: Number},//, required: true },
     CustomerName: { type: String},//, required: true },
@@ -169,26 +159,6 @@ app.put("/updatesettlement",async(req,res) => {
   res.send({success : true, message : "Data Updated Successfully", data : data})
 })
 
-// app.post("/savesettlement", async (req, res) => {
-//   const { CustomerId, AmountToBePaid, TrayToBeCollected } = req.body;
-
-//   let settlement = await settlementModel.findOne({ CustomerId: CustomerId });
-
-//   if (settlement) {
-//     settlement.AmountToBePaid = AmountToBePaid;
-//     settlement.TrayToBeCollected = TrayToBeCollected;
-//   } else {
-//     settlement = new settlementModel({
-//       CustomerId,
-//       AmountToBePaid,
-//       TrayToBeCollected,
-//     });
-//   }
-
-//   await settlement.save();
-//   res.send({ success: true, message: "Settlement Saved Successfully", data: settlement });
-// });
-
 
 //get data 
 app.get("/getsettlementdetails/:id", async (req, res) => {
@@ -219,7 +189,7 @@ app.delete("/delete/:id",async(req,res) => {
     res.send({success : true, message : "Data Deleted Successfully", data : cusData})
 })
 
-mongoose.connect("mongodb+srv://sanoferniswan:sano%401011@egg-storedb.auizr.mongodb.net/Egg-StoreDB")
+mongoose.connect(process.env.MONGO_URI)
 .then(() =>{
     console.log("Conntected to DataBase")
     app.listen(PORT, () => console.log("Server is up and running..."))
